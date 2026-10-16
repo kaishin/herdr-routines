@@ -8,7 +8,7 @@ from pathlib import Path
 from schedule import Cron, parse_every
 
 HERDR = os.environ.get("HERDR_BIN_PATH", "herdr")
-PLUGIN_ID = "herdr-routines"
+PLUGIN_ID = "kaishin.herdr-routines"
 
 TYPES = ("shell", "pane", "plugin_action")
 PANE_ONLY_KEYS = ("workspace", "workspace_id", "workspace_mode", "tab_mode",

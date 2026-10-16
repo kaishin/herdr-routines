@@ -131,6 +131,10 @@ class TestResolveTab(unittest.TestCase):
             {"workspace_id": "wT", "agent": "claude", "agent_status": "idle"})
         self.assertEqual(pane_id, "wT:pNew")
         self.assertIn(("tab", "close", "wT:t1"), calls)
+        create_index = next(i for i, call in enumerate(calls)
+                            if call[:2] == ("tab", "create"))
+        # Closing the last tab removes its workspace, so create first.
+        self.assertLess(create_index, calls.index(("tab", "close", "wT:t1")))
 
 
 if __name__ == "__main__":

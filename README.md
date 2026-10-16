@@ -7,9 +7,9 @@ pane, natively detected and tracked by Herdr.
 ## Install
 
 ```sh
-herdr plugin install mrcndz/herdr-routines
-touch "$(herdr plugin config-dir herdr-routines)/routines.toml"   # then add routines (below)
-herdr plugin action invoke herdr-routines.start
+herdr plugin install kaishin/herdr-routines
+touch "$(herdr plugin config-dir kaishin.herdr-routines)/routines.toml"   # then add routines (below)
+herdr plugin action invoke kaishin.herdr-routines.start
 ```
 
 ## Configure
@@ -158,7 +158,7 @@ Everything is exposed as plugin actions, invocable from the CLI or
 bindable to keys:
 
 ```sh
-herdr plugin action invoke herdr-routines.<action>
+herdr plugin action invoke kaishin.herdr-routines.<action>
 ```
 
 | action | what it does |
@@ -172,10 +172,10 @@ herdr plugin action invoke herdr-routines.<action>
 Example session:
 
 ```sh
-$ herdr plugin action invoke herdr-routines.validate
+$ herdr plugin action invoke kaishin.herdr-routines.validate
 0 errors, 3 routine(s) loaded
 
-$ herdr plugin action invoke herdr-routines.status
+$ herdr plugin action invoke kaishin.herdr-routines.status
 daemon: running (pid 30370)
   morning-repo-review      [0 9 * * mon-fri]  last: 2026-07-18T09:00:00
   inbox-triage             [*/15 9-18 * * mon-fri]  last: 2026-07-18T17:45:00
@@ -213,7 +213,7 @@ funcsave herdr-routines
 Then: `herdr-routines run morning-repo-review`, `herdr-routines status`.
 
 State and logs live in the plugin state dir
-(`~/.local/state/herdr/plugins/herdr-routines/`): `daemon.log`,
+(`~/.local/state/herdr/plugins/kaishin.herdr-routines/`): `daemon.log`,
 `runs.jsonl` (one JSON line per firing), `state.json`, `daemon.pid`.
 
 ## Development

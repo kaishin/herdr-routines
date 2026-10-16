@@ -56,6 +56,7 @@ def resolve_workspace(routine: dict, settings: dict, now: datetime) -> str:
 def resolve_tab(routine: dict, ws_id: str):
     """Find-or-create the routine's tab; returns (pane_id, pane_info|None)."""
     name = routine["name"]
+    tab_to_close = None
     if routine["tab_mode"] == "reuse":
         known = load_state()["tabs"].get(name)
         if known:
@@ -68,7 +69,7 @@ def resolve_tab(routine: dict, ws_id: str):
                         return known["pane_id"], pane
                     # finished agent occupies the pane: typing a command
                     # would go into its prompt box — recreate the tab
-                    herdr("tab", "close", known["tab_id"])
+                    tab_to_close = known["tab_id"]
             except RuntimeError:
                 pass
         label = name
@@ -77,6 +78,12 @@ def resolve_tab(routine: dict, ws_id: str):
     focus = "--focus" if routine.get("focus") else "--no-focus"
     res = herdr("tab", "create", "--workspace", ws_id, "--label", label, focus,
                 "--cwd", os.path.expanduser(routine["cwd"]))
+    # Closing the last tab removes the workspace; keep it alive until now.
+    if tab_to_close:
+        try:
+            herdr("tab", "close", tab_to_close)
+        except RuntimeError:
+            pass
     pane_id = res["root_pane"]["pane_id"]
     update_state(lambda s: s["tabs"].update(
         {name: {"pane_id": pane_id, "tab_id": res["tab"]["tab_id"]}}))
